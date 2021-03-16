@@ -15,12 +15,12 @@ var drawnItems = L.featureGroup().addTo(map);
 var cartoData = L.layerGroup().addTo(map);
 var url = "https://chian-yu.carto.com/api/v2/sql";
 var urlGeoJSON = url + "?format=GeoJSON&q=";
-var sqlQuery = "SELECT the_geom, description, name FROM lab_3b_chian";
+var sqlQuery = "SELECT the_geom, name, address, phone, day FROM lab_3c_chian";
 function addPopup(feature, layer) {
     layer.bindPopup(
-        "<b>" + feature.properties.name + "</b><br>" +
-        feature.properties.description
-    );
+        "<b>Name: " + feature.properties.name + "</b><br>Adress: " +
+        feature.properties.address + "</b><br>Phone: " + feature.properties.phone + "</b><br>Off Time:" + feature.properties.day
+    ).openPopup();
 }
 
 fetch(urlGeoJSON + sqlQuery)
@@ -33,7 +33,7 @@ fetch(urlGeoJSON + sqlQuery)
 
 new L.Control.Draw({
     draw : {
-        polygon : true,
+        polygon : false,
         polyline : false,
         rectangle : false,     // Rectangles disabled
         circle : false,        // Circles disabled
@@ -48,9 +48,22 @@ new L.Control.Draw({
 function createFormPopup() {
     var popupContent =
         '<form>' +
-        'Feature\'s Title:<br><input type="text" id="input_name"><br>' +
-        'Description:<br><input type="text" id="input_desc"><br>' +
-        '<input type="button" value="Submit" id="submit">' +
+        '<b>Grocery Name:</b><br><input type="text" id="name" autofocus><br><br>'+
+    		'<b>Grocery Address:</b><br><textarea id="address" name="address" rows="2" cols="20"></textarea><br><br>'+
+    		'<b>Grocery Phone:</b><br><input type="text" id="phone"><br><br>'+
+    		'<b>Grocery Open Day:</b><br><input list="day"> <datalist id="day"><option value="Weekday"><option value="Mon - Sat"><option value="Everyday"></datalist><br><br>'+
+    		'<b>Products:</b><br><input type="checkbox" id="beverages" name="beverages" value="Yes"><label for="beverages">Beverages</label><br><input type="checkbox" id="cannedgoods" name="cannedgoods" ><label for="cannedgoods">Canned Goods</label><br><br>'+
+    			// '<input type="checkbox" id="product3" name="product3" value="dairy"><label for="product3"> Dairy</label><br>'+
+    			// '<input type="checkbox" id="product4" name="product4" value="frozenFoods"><label for="product4"> Frozen Foods</label><br>'+
+    			// '<input type="checkbox" id="product5" name="product5" value="meat"><label for="product5"> Meat</label><br>'+
+          // '<input type="checkbox" id="product6" name="product6" value="produce"><label for="product6"> Produce</label><br>'+
+    			// '<input type="checkbox" id="product7" name="product7" value="cleaners"><label for="product7"> Cleaners</label><br>'+
+    			// '<input type="checkbox" id="product8" name="product8" value="personalCare"><label for="product8"> Personal Care</label><br>'+
+    			// '<input type="checkbox" id="product9" name="product9" value="others"><label for="product9"> Others</label><br><br>'+
+    			'<b>Comment:</b><br><textarea id="comment" name="comment" rows="3" cols="20"></textarea><br><br>'+
+    		  '<input type="button" value="Submit" id="submit">'+
+          '<input type="reset" value="Reset">'
+    		'</fieldset>'+
         '</form>'
     drawnItems.bindPopup(popupContent).openPopup();
 }
@@ -65,8 +78,18 @@ function setData(e) {
     if(e.target && e.target.id == "submit") {
 
         // Get user name and description
-        var enteredUsername = document.getElementById("input_name").value;
-        var enteredDescription = document.getElementById("input_desc").value;
+        var enteredName = document.getElementById("name").value;
+        var enteredAddress = document.getElementById("address").value;
+        var enteredPhone = document.getElementById("phone").value;
+        var enteredDay =
+        document.getElementById("day").value;
+        var enteredBeverages =
+        document.getElementById("beverages").value;
+        var enteredCannedGoods =
+        document.getElementById("cannedgoods").value;
+        var enteredComment =
+        document.getElementById("comment").value;
+
 
         // For each drawn layer
         drawnItems.eachLayer(function(layer) {
@@ -74,11 +97,16 @@ function setData(e) {
 			// Create SQL expression to insert layer
             var drawing = JSON.stringify(layer.toGeoJSON().geometry);
             var sql =
-                "INSERT INTO lab_3b_chian (the_geom, name, description) " +
+                "INSERT INTO lab_3c_chian (the_geom, name, address, phone, day, beverages, cannedgoods, comment) " +
                 "VALUES (ST_SetSRID(ST_GeomFromGeoJSON('" +
                 drawing + "'), 4326), '" +
-                enteredUsername + "', '" +
-                enteredDescription + "')";
+                enteredName + "', '" +
+                enteredAddress + "', '" +
+                enteredPhone + "', '" +
+                enteredDay + "', '" +
+                enteredBeverages + "', '" +
+                enteredCannedGoods + "', '" +
+                enteredComment + "')";
             console.log(sql);
 
             // Send the data
@@ -102,8 +130,11 @@ function setData(e) {
         // Transfer submitted drawing to the CARTO layer
         //so it persists on the map without you having to refresh the page
         var newData = layer.toGeoJSON();
-        newData.properties.description = enteredDescription;
-        newData.properties.name = enteredUsername;
+        newData.properties.name = enteredName;
+        newData.properties.address = enteredAddress;
+        newData.properties.phone = enteredPhone;
+        newData.properties.day = enteredDay;
+        newData.properties.comment = enteredComment;
         L.geoJSON(newData, {onEachFeature: addPopup}).addTo(cartoData);
 
     });

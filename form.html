@@ -1,0 +1,86 @@
+<html>
+<head>
+	<title>TGIS 504 lab3c</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" /><!--These settings are ideal for full-screen mobile use-->
+	<link rel="stylesheet" href="styles.css"/>
+	<!-- Leaflet links -->
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+	<!-- Leaflet.draw links -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js" integrity="sha512-ozq8xQKq6urvuU6jNgkfqAmT7jKN2XumbrX1JiB3TnF7tI48DPI4Gy1GXKD/V3EExgAs1V+pRO7vwtS1LHg0Gw==" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" integrity="sha512-gc3xjCmIy673V6MyOAZhIW93xhM9ei1I+gLbmFjUHIjocENRsLX/QUE1htk5q1XV2D/iie/VQ8DXI6Vu8bexvQ==" crossorigin="anonymous" />
+	</head>
+<body>
+	<form action="/action_page.php">
+		<fieldset>
+			<legend>Grocery Survery:</legend>
+
+		  <label for="gName">Grocery Name:</label><br>
+		  <input type="text" id="gName" required autofocus><br><br>
+
+			<label for="gAddress">Grocery Address:</label><br>
+			<textarea name="gAddress" rows="3" cols="20" required></textarea><br><br>
+
+			<label for="gPhone">Grocery Phone:</label><br>
+			<input type="text" id="gPhone"required><br><br>
+
+			<label for="gDay">Grocery Open Day:</label><br>
+				<input type="checkbox" id="Monday" name="gDay" value="Monday">
+	  		<label for="Monday">Monday</label><br>
+				<input type="checkbox" id="Tuesday" name="gDay" value="Tuesday">
+	  		<label for="Tuesday">Tuesday</label><br>
+				<input type="checkbox" id="Wednesday" name="gDay" value="Wednesday">
+	  		<label for="Wednesday">Wednesday</label><br>
+				<input type="checkbox" id="Thursday" name="gDay" value="Thursday">
+	  		<label for="Thursday">Thursday</label><br>
+				<input type="checkbox" id="Friday" name="gDay" value="Friday">
+	  		<label for="Friday">Friday</label><br>
+				<input type="checkbox" id="Saturday" name="gDay" value="Saturday">
+	  		<label for="Saturday">Saturday</label><br>
+				<input type="checkbox" id="Sunday" name="gDay" value="Sunday">
+	  		<label for="Sunday">Sunday</label><br><br>
+
+			<!-- <label for="gTime">Grocery Open Time:</label><br>
+				<input type="checkbox" id="Morning" name="gTime" value="6-9am">
+				<label for="Morning"> Morning</label><br>
+				<input type="checkbox" id="Morning" name="gTime" value="Morning">
+				<label for="Morning"> Morning</label><br>
+				<input type="checkbox" id="Morning" name="gTime" value="Morning">
+				<label for="Morning"> Morning</label><br><br> -->
+
+			<label for="product">Products:</label><br>
+				<input type="checkbox" id="product1" name="product1" value="beverages">
+			  <label for="product1"> Beverages</label><br>
+			  <input type="checkbox" id="product2" name="product2" value="cannedGoods">
+			  <label for="product2"> Canned Goods</label><br>
+			  <input type="checkbox" id="product3" name="product3" value="dairy">
+			  <label for="product3"> Dairy</label><br>
+				<input type="checkbox" id="product4" name="product4" value="frozenFoods">
+			  <label for="product4"> Frozen Foods</label><br>
+				<input type="checkbox" id="product5" name="product5" value="meat">
+				<label for="product5"> Meat</label><br>
+				<input type="checkbox" id="product6" name="product6" value="produce">
+				<label for="product6"> Produce</label><br>
+				<input type="checkbox" id="product7" name="product7" value="cleaners">
+				<label for="product7"> Cleaners</label><br>
+				<input type="checkbox" id="product8" name="product8" value="personalCare">
+				<label for="product8"> Personal Care</label><br>
+				<input type="checkbox" id="product9" name="product9" value="others">
+				<label for="product9"> Others</label><br><br>
+
+			<label for="photo">Select Photos:</label>
+			<input type="file" id="photo" name="photo" multiple><br><br>
+
+			<label for="comment">Comment:</label><br>
+			<textarea name="comment" rows="3" cols="20" required></textarea><br><br>
+
+			<label for="dayTime">Fill Out Date and Time:</label>
+			<input type="datetime-local" id="dayTime" name="dayTime"><br><br>
+
+		  <input type="submit" value="Submit">
+			<input type="reset" value="Reset">
+		</fieldset>
+</form>
+</body>
+</html>
