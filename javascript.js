@@ -1,4 +1,4 @@
-alert("This web page is used to collect point vector and attribute data. The drawing toolbox is on the left side. The pentagon button is used to draw polygon. The marker button is used to draw points. The pen button is for edit and the garbage can is for delete. After finishing your feature, please enter the feature's title and its description.")
+alert("This web page is used to collect the delivery grocery position and information. The grocery will be collected as point vector data and information will be collected by the form and saved in attribute data. The drawing toolbox is on the left side. Clicking the marker button to add new data. Each grocery data need to finish the popup form and click submit button. The pen button is for edit and the garbage can is for delete. ")
 
 var map = L.map('map').setView([47.24, -122.43], 13);
 
