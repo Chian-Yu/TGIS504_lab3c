@@ -1,4 +1,4 @@
-alert("This web page is used to collect polygon and point vector and attribute data. The drawing toolbox is on the left side. The pentagon button is used to draw polygon. The marker button is used to draw points. The pen button is for edit and the garbage can is for delete. After finishing your feature, please enter the feature's title and its description.")
+alert("This web page is used to collect point vector and attribute data. The drawing toolbox is on the left side. The pentagon button is used to draw polygon. The marker button is used to draw points. The pen button is for edit and the garbage can is for delete. After finishing your feature, please enter the feature's title and its description.")
 
 var map = L.map('map').setView([47.24, -122.43], 13);
 
@@ -15,11 +15,11 @@ var drawnItems = L.featureGroup().addTo(map);
 var cartoData = L.layerGroup().addTo(map);
 var url = "https://chian-yu.carto.com/api/v2/sql";
 var urlGeoJSON = url + "?format=GeoJSON&q=";
-var sqlQuery = "SELECT the_geom, name, address, phone, day FROM lab_3c_chian";
+var sqlQuery = "SELECT the_geom, name, address, phone, day, product, deliveryservice, comment FROM lab_3c_chian";
 function addPopup(feature, layer) {
     layer.bindPopup(
-        "<b>Name: " + feature.properties.name + "</b><br>Adress: " +
-        feature.properties.address + "</b><br>Phone: " + feature.properties.phone + "</b><br>Off Time:" + feature.properties.day
+        "<b>Name: </b>" + feature.properties.name + "<b><br>Adress: </b>" +
+        feature.properties.address + "<b><br>Phone: </b>" + feature.properties.phone + "<b><br>Open Day: </b>" + feature.properties.day + "<b><br>Delivery Service: </b>" + feature.properties.deliveryservice + "<b><br>Products: </b>" + feature.properties.product + "<b><br>Comment: </b>" + feature.properties.comment
     ).openPopup();
 }
 
@@ -51,19 +51,12 @@ function createFormPopup() {
         '<b>Grocery Name:</b><br><input type="text" id="name" autofocus><br><br>'+
     		'<b>Grocery Address:</b><br><textarea id="address" name="address" rows="2" cols="20"></textarea><br><br>'+
     		'<b>Grocery Phone:</b><br><input type="text" id="phone"><br><br>'+
-    		'<b>Grocery Open Day:</b><br><input list="day"> <datalist id="day"><option value="Weekday"><option value="Mon - Sat"><option value="Everyday"></datalist><br><br>'+
-    		'<b>Products:</b><br><input type="checkbox" id="beverages" name="beverages" value="Yes"><label for="beverages">Beverages</label><br><input type="checkbox" id="cannedgoods" name="cannedgoods" ><label for="cannedgoods">Canned Goods</label><br><br>'+
-    			// '<input type="checkbox" id="product3" name="product3" value="dairy"><label for="product3"> Dairy</label><br>'+
-    			// '<input type="checkbox" id="product4" name="product4" value="frozenFoods"><label for="product4"> Frozen Foods</label><br>'+
-    			// '<input type="checkbox" id="product5" name="product5" value="meat"><label for="product5"> Meat</label><br>'+
-          // '<input type="checkbox" id="product6" name="product6" value="produce"><label for="product6"> Produce</label><br>'+
-    			// '<input type="checkbox" id="product7" name="product7" value="cleaners"><label for="product7"> Cleaners</label><br>'+
-    			// '<input type="checkbox" id="product8" name="product8" value="personalCare"><label for="product8"> Personal Care</label><br>'+
-    			// '<input type="checkbox" id="product9" name="product9" value="others"><label for="product9"> Others</label><br><br>'+
-    			'<b>Comment:</b><br><textarea id="comment" name="comment" rows="3" cols="20"></textarea><br><br>'+
-    		  '<input type="button" value="Submit" id="submit">'+
-          '<input type="reset" value="Reset">'
-    		'</fieldset>'+
+    		'<b>Grocery Open Day:</b><br><select id="day" name="day"><option value="">--Please Select--</option><option value="Weekday">Weekday</option><option value="Mon - Sat">Mon - Sat</option><option value="Everyday">Everyday</option></select><br><br>'+
+        '<b>Delivery Service:</b><br><select id="deliveryservice" name="day"><option value="">--Please Select--</option><option value="yes">Yes</option><option value="No">No</option></select><br><br>'+
+    		'<b>Products:</b><br><input type="checkbox" id="beverages" name="product"><label for="beverages">Beverages</label><br><input type="checkbox" id="cannedgoods" name="product" ><label for="cannedgoods">Canned Goods</label><br><input type="checkbox" id="dairy" name="product"><label for="dairy"> Dairy</label><br><input type="checkbox" id="frozenfoods" name="product"><label for="frozenfoods"> Frozen Foods</label><br><input type="checkbox" id="meat" name="product"><label for="meat"> Meat</label><br><input type="checkbox" id="produce" name="product"><label for="produce"> Produce</label><br><input type="checkbox" id="cleaners" name="product"><label for="cleaners"> Cleaners</label><br><input type="checkbox" id="personalcare" name="product8"><label for="personalcare"> Personal Care</label><br><input type="checkbox" id="others" name="product9"><label for="others"> Others</label><input type="text" id="otherstext"><br><br>'+
+    		'<b>Comment:</b><br><textarea id="comment" name="comment" rows="3" cols="20"></textarea><br><br>'+
+    		'<input type="button" value="Submit" id="submit">'+
+        '  <input type="reset" value="Reset">'+
         '</form>'
     drawnItems.bindPopup(popupContent).openPopup();
 }
@@ -83,10 +76,45 @@ function setData(e) {
         var enteredPhone = document.getElementById("phone").value;
         var enteredDay =
         document.getElementById("day").value;
-        var enteredBeverages =
-        document.getElementById("beverages").value;
-        var enteredCannedGoods =
-        document.getElementById("cannedgoods").value;
+        var enteredDeliveryService =
+        document.getElementById("deliveryservice").value;
+        var enteredProduct = '';
+        if(beverages.checked == true)
+          {enteredProduct = enteredProduct + 'beverages, '}
+        else
+          {enteredProduct = enteredProduct};
+        if(cannedgoods.checked == true)
+          {var enteredProduct = enteredProduct + 'canned goods, '}
+        else
+          {var enteredProduct = enteredProduct};
+        if(dairy.checked == true)
+          {var enteredProduct = enteredProduct + 'dairy, '}
+        else
+          {var enteredProduct = enteredProduct};
+        if(frozenfoods.checked == true)
+          {var enteredProduct = enteredProduct + 'frozen foods, '}
+        else
+          {var enteredProduct = enteredProduct};
+        if(meat.checked == true)
+          {var enteredProduct = enteredProduct + 'meat, '}
+        else
+          {var enteredProduct = enteredProduct};
+        if(produce.checked == true)
+          {var enteredProduct = enteredProduct + 'produce, '}
+        else
+          {var enteredProduct = enteredProduct};
+        if(cleaners.checked == true)
+          {var enteredProduct = enteredProduct + 'cleaners, '}
+        else
+          {var enteredProduct = enteredProduct};
+        if(personalcare.checked == true)
+          {var enteredProduct = enteredProduct + 'personal care, '}
+        else
+          {var enteredProduct = enteredProduct};
+        if(others.checked == true)
+          {var enteredProduct = enteredProduct + document.getElementById("otherstext").value}
+        else
+          {var enteredProduct = enteredProduct};
         var enteredComment =
         document.getElementById("comment").value;
 
@@ -97,16 +125,16 @@ function setData(e) {
 			// Create SQL expression to insert layer
             var drawing = JSON.stringify(layer.toGeoJSON().geometry);
             var sql =
-                "INSERT INTO lab_3c_chian (the_geom, name, address, phone, day, beverages, cannedgoods, comment) " +
+                "INSERT INTO lab_3c_chian (the_geom, name, address, phone, day, product, comment, deliveryservice) " +
                 "VALUES (ST_SetSRID(ST_GeomFromGeoJSON('" +
                 drawing + "'), 4326), '" +
                 enteredName + "', '" +
                 enteredAddress + "', '" +
                 enteredPhone + "', '" +
                 enteredDay + "', '" +
-                enteredBeverages + "', '" +
-                enteredCannedGoods + "', '" +
-                enteredComment + "')";
+                enteredProduct + "', '" +
+                enteredComment + "', '" +
+                enteredDeliveryService + "')";
             console.log(sql);
 
             // Send the data
@@ -134,7 +162,9 @@ function setData(e) {
         newData.properties.address = enteredAddress;
         newData.properties.phone = enteredPhone;
         newData.properties.day = enteredDay;
+        newData.properties.product = enteredProduct;
         newData.properties.comment = enteredComment;
+        newData.properties.deliveryservice = enteredDeliveryService
         L.geoJSON(newData, {onEachFeature: addPopup}).addTo(cartoData);
 
     });
